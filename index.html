@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <!-- ... Your HTML and CSS ... -->
+<!-- ... Your HTML and CSS ... -->
 <script>
   const commentInput = document.getElementById('comment-input');
   const submitButton = document.getElementById('submit-comment');
@@ -30,15 +31,38 @@
     comments.forEach(comment => {
       const commentElement = document.createElement('div');
       commentElement.className = 'comment';
-      commentElement.innerHTML = `<p>${comment.content}</p>`;
-      // Append more content and actions here (upvote/downvote buttons)
+      commentElement.innerHTML = `
+        <p>${comment.content}</p>
+        <div class="comment-actions">
+          <button class="upvote-button" onclick="upvoteComment('${comment._id}')">Upvote</button>
+          <button class="downvote-button" onclick="downvoteComment('${comment._id}')">Downvote</button>
+        </div>
+        <p>Upvotes: ${comment.upvotes} | Downvotes: ${comment.downvotes}</p>
+      `;
       commentSection.appendChild(commentElement);
     });
+  }
+
+  async function upvoteComment(commentId) {
+    const response = await fetch(`/api/comments/${commentId}/upvote`, { method: 'PUT' });
+    if (response.ok) {
+      fetchComments(); // Fetch comments again after voting
+    }
+  }
+
+  async function downvoteComment(commentId) {
+    const response = await fetch(`/api/comments/${commentId}/downvote`, { method: 'PUT' });
+    if (response.ok) {
+      fetchComments(); // Fetch comments again after voting
+    }
   }
 
   // Fetch initial comments when the page loads
   fetchComments();
 </script>
+</body>
+</html>
+
 </body>
 </html>
 
