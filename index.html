@@ -1,4 +1,47 @@
 <!DOCTYPE html>
+<!-- ... Your HTML and CSS ... -->
+<script>
+  const commentInput = document.getElementById('comment-input');
+  const submitButton = document.getElementById('submit-comment');
+  const commentSection = document.getElementById('comment-section');
+
+  submitButton.addEventListener('click', async () => {
+    const content = commentInput.value;
+
+    const response = await fetch('/api/comments', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ content })
+    });
+
+    if (response.ok) {
+      commentInput.value = '';
+      fetchComments(); // Fetch comments again after submitting
+    }
+  });
+
+  async function fetchComments() {
+    const response = await fetch('/api/comments');
+    const comments = await response.json();
+
+    commentSection.innerHTML = '';
+    comments.forEach(comment => {
+      const commentElement = document.createElement('div');
+      commentElement.className = 'comment';
+      commentElement.innerHTML = `<p>${comment.content}</p>`;
+      // Append more content and actions here (upvote/downvote buttons)
+      commentSection.appendChild(commentElement);
+    });
+  }
+
+  // Fetch initial comments when the page loads
+  fetchComments();
+</script>
+</body>
+</html>
+
 <html lang="en">
 <head>
   <meta charset="UTF-8">
