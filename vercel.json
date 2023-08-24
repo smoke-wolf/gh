@@ -1,0 +1,7 @@
+{
+  "rewrites": [
+    { "source": "/api/comments", "destination": "/api/comments" },
+    { "source": "/api/comments/:id/upvote", "destination": "/api/upvote/:id" },
+    { "source": "/api/comments/:id/downvote", "destination": "/api/downvote/:id" }
+  ]
+}
